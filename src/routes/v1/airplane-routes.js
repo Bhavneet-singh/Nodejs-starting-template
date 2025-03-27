@@ -17,8 +17,10 @@ router.post(
 //api/vi/airplane GET
 router.get("/", AirplaneController.getAirplanes);
 
-
 //api/vi/airplane/:id GET
 router.get("/:id", AirplaneController.getAirplane);
+
+//api/vi/airplane/:id DELETE
+router.delete("/:id", AirplaneController.destroyAirplane);
 
 module.exports = router;

@@ -63,9 +63,22 @@ async function getAirplaneById(id) {
   }
 }
 
+async function destroyAirplaneById(id) {
+  try {
+    const response = await airplaneRepository.destroy(id);
+    return response ;
+  } catch (error) {
+    throw new AppError(
+      "Something went wrong while deleting airplane",
+      StatusCodes.INTERNAL_SERVER_ERROR
+    );
+  }
+}
+
 
 module.exports = {
   createAirplane,
   getAirplanes,
   getAirplaneById,
+  destroyAirplaneById
 };
