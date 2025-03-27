@@ -3,6 +3,7 @@ const logger = require("../config/logger-config");
 const { SuccessResponse, ErrorResponse } = require("../utils/common/index");
 
 const { AirplaneService } = require("../services/index");
+const { Error } = require("sequelize");
 // console.log("Contents of services module:", services); // Log the contents of the services module
 
 async function createAirplane(req, res) {
@@ -24,7 +25,7 @@ async function createAirplane(req, res) {
   }
 }
 
- async function getAirplanes(req, res) {
+async function getAirplanes(req, res) {
   try {
     const airplanes = await AirplaneService.getAirplanes();
     if (!airplanes) {
@@ -40,7 +41,25 @@ async function createAirplane(req, res) {
   }
 }
 
+async function getAirplane(req, res) {
+  try {
+    const airplane = await AirplaneService.getAirplaneById(req.params.id);
+    if (airplane.statusCode === StatusCodes.NOT_FOUND) {
+      return new AppError(
+        "Airplane requested not found",
+        StatusCodes.NOT_FOUND
+      );
+    }
+    SuccessResponse.data = airplane;
+    return res.status(StatusCodes.OK).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(error.statusCode).json(ErrorResponse);
+  }
+}
+
 module.exports = {
   createAirplane,
   getAirplanes,
+  getAirplane,
 };

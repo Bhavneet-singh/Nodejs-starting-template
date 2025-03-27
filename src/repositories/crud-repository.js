@@ -1,5 +1,7 @@
 const { where } = require("sequelize");
 const logger = require("../config/logger-config"); // Corrected import
+const { AppError } = require("../utils/errors");
+const { StatusCodes } = require("http-status-codes");
 
 class CrudRepository {
   constructor(model) {
@@ -21,8 +23,8 @@ class CrudRepository {
     try {
       const response = await this.model.destroy({
         where: {
-          id: id
-        }
+          id: id,
+        },
       });
       return response;
     } catch (error) {
@@ -55,8 +57,8 @@ class CrudRepository {
     try {
       const response = await this.model.update(data, {
         where: {
-          id: id
-        }
+          id: id,
+        },
       });
       return response;
     } catch (error) {

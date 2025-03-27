@@ -7,7 +7,6 @@ const airplaneRepository = new AirplaneRepository();
 
 async function createAirplane(data) {
   try {
-    console.log(data);
     const airplane = await airplaneRepository.create(data);
     return airplane;
   } catch (error) {
@@ -43,7 +42,30 @@ async function getAirplanes() {
   }
 }
 
+async function getAirplaneById(id) {
+  try {
+    const airplane = await airplaneRepository.find(id);
+    if (!airplane) {
+      throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+    }
+    return airplane;
+  } catch (error) {
+    if (error.statusCode === StatusCodes.NOT_FOUND) {
+      throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+    }
+    
+    let explanation =
+      error.errors && Array.isArray(error.errors)
+        ? error.errors.map((err) => err.message)
+        : "An unexpected error occurred";
+
+    throw new AppError(explanation, StatusCodes.INTERNAL_SERVER_ERROR);
+  }
+}
+
+
 module.exports = {
   createAirplane,
   getAirplanes,
+  getAirplaneById,
 };
