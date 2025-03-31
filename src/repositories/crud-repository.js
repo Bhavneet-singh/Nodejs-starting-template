@@ -26,8 +26,11 @@ class CrudRepository {
           id: id,
         },
       });
-      if(!response){
-        throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+      if (!response) {
+        throw new AppError(
+          "Airplane requested not found",
+          StatusCodes.NOT_FOUND
+        );
       }
       return response;
     } catch (error) {

@@ -7,7 +7,6 @@ const Logger = require("../config/logger-config"); // Corrected import
 
 class AirplaneRepository extends CrudRepository {
   constructor() {
-    Logger.info("AirplaneRepository constructor called");
     super(Airplane);
   }
 }
