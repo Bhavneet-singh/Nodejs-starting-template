@@ -53,7 +53,7 @@ async function getAirplaneById(id) {
     if (error.statusCode === StatusCodes.NOT_FOUND) {
       throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
     }
-    
+
     let explanation =
       error.errors && Array.isArray(error.errors)
         ? error.errors.map((err) => err.message)
@@ -66,19 +66,38 @@ async function getAirplaneById(id) {
 async function destroyAirplaneById(id) {
   try {
     const response = await airplaneRepository.destroy(id);
-    return response ;
+    if(!response) {
+      throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+    }
+
+    return response;
   } catch (error) {
     throw new AppError(
-      "Something went wrong while deleting airplane",
+      error.message || "Something went wrong while deleting airplane",
       StatusCodes.INTERNAL_SERVER_ERROR
     );
   }
 }
 
+async function updateAirplaneById(id, data) {
+  try {
+    const response = await airplaneRepository.update(id , data) ; 
+    if(!response) {
+      throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+    }
+    return response ;
+  } catch (error) {
+    throw new AppError(
+      error.message || "Something went wrong while updating airplane",
+    StatusCodes.INTERNAL_SERVER_ERROR
+    );
+    
+  }}
 
 module.exports = {
   createAirplane,
   getAirplanes,
   getAirplaneById,
-  destroyAirplaneById
+  destroyAirplaneById,
+  updateAirplaneById , 
 };

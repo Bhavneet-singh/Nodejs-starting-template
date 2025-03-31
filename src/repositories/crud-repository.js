@@ -26,6 +26,9 @@ class CrudRepository {
           id: id,
         },
       });
+      if(!response){
+        throw new AppError("Airplane requested not found", StatusCodes.NOT_FOUND);
+      }
       return response;
     } catch (error) {
       logger.error("Something went wrong in CrudRepository.destroy()");
