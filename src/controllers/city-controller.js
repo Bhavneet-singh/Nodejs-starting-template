@@ -18,6 +18,29 @@ async function createCity(req, res) {
   }
 }
 
+async function deleteCity(req, res) {
+  try {
+    const city = await CityService.deleteCity(req.params.id);
+    SuccessResponse.data = city;
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.BAD_GATEWAY).json(ErrorResponse);
+  }
+}
+
+async function updateCity(req, res) {
+  try {
+    const city = await CityService.updateCity(req.params.id, req.body.name );
+    SuccessResponse.data = city;
+    return res.status(StatusCodes.CREATED).json(SuccessResponse);
+  } catch (error) {
+    ErrorResponse.error = error;
+    return res.status(StatusCodes.BAD_GATEWAY).json(ErrorResponse);
+  }
+}
 module.exports = {
   createCity,
+  deleteCity,
+  updateCity
 };
